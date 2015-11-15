@@ -2,6 +2,17 @@
 board = [[0 for x in xrange(7)] for y in range(6)]
 
 
+def open_columns():
+
+    columns = []
+    i = 0
+    while i < 7:
+        if board[0][i] == 0:
+            columns.append(i)
+        i += 1
+    return columns
+
+
 def reset_board():
     for i in range(len(board)):
         for j in range(len(board[i])):
@@ -14,7 +25,7 @@ def drop_piece(column, playernum):
         if board[i][column] != 0:
             if i == 0:
                 print "ERROR: Column already full"
-                return False
+                return -1
             board[i-1][column] = playernum
             row = i-1
             break
