@@ -22,12 +22,12 @@ if __name__=='__main__':
 
         column = input("Player " + str(currentplayer) + " choose an open column to drop your piece in: \n")
 
-        while int(column) not in open_columns:
+        while column not in open_columns:
             print "ERROR: " + str(column) + " is not a valid open column"
 
             print "Open columns: " + str(open_columns)
 
-            column = raw_input("Player " + str(currentplayer) + " choose an open column to drop your piece in: \n")
+            column = input("Player " + str(currentplayer) + " choose an open column to drop your piece in: \n")
 
         winner = connect4.drop_piece(column, currentplayer)
 
