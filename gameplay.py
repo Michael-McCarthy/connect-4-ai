@@ -1,4 +1,5 @@
 import connect4
+import ai
 
 players = [1,2]
 
@@ -12,24 +13,35 @@ if __name__=='__main__':
     player = 0
     currentplayer = players[0]
 
-    while winner == False and len(connect4.open_columns()) > 0:
+    board = connect4.real_board
 
-        connect4.print_board()
+    while winner == False and len(connect4.open_columns(board)) > 0:
 
-        open_columns = connect4.open_columns()
+        connect4.print_board(board)
 
-        print "Open columns: " + str(open_columns)
+        if currentplayer == 1:
 
-        column = input("Player " + str(currentplayer) + " choose an open column to drop your piece in: \n")
-
-        while column not in open_columns:
-            print "ERROR: " + str(column) + " is not a valid open column"
+            open_columns = connect4.open_columns(board)
 
             print "Open columns: " + str(open_columns)
 
             column = input("Player " + str(currentplayer) + " choose an open column to drop your piece in: \n")
 
-        winner = connect4.drop_piece(column, currentplayer)
+            while column not in open_columns:
+                print "ERROR: " + str(column) + " is not a valid open column"
+
+                print "Open columns: " + str(open_columns)
+
+                column = input("Player " + str(currentplayer) + " choose an open column to drop your piece in: \n")
+
+            winner = connect4.drop_piece(column, currentplayer, board)
+
+        else:
+            column = ai.analyze_choices(5, 2, 2, board)[1]
+            print "DROP AT: " + str(column)
+            winner = connect4.drop_piece(column, currentplayer, board)
+
+
 
         if winner != True:
             if player == 1:
@@ -42,8 +54,8 @@ if __name__=='__main__':
 
     if winner == False:
         print "DRAW"
-        connect4.print_board()
+        connect4.print_board(board)
 
     else:
         print "Player " + str(currentplayer) + " Wins!"
-        connect4.print_board()
+        connect4.print_board(board)
