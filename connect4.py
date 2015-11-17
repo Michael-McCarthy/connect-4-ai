@@ -13,18 +13,10 @@ def open_columns(board):
     return columns
 
 
-def reset_board():
+def reset_board(board):
     for i in range(len(board)):
         for j in range(len(board[i])):
             board[i][j] = 0
-
-def clone_board(board):
-    clone = [[0 for x in xrange(7)] for y in range(6)]
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            clone[i][j] = board[i][j]
-
-    return clone
 
 def drop_piece(column, playernum, board):
 
@@ -219,8 +211,139 @@ def check_down_diag(row, column, board):
     return False
 
 
+def find_threes(player, board):
+    threes = [[0, player, player, player],
+              [player, 0, player, player],
+              [player, player, 0, player],
+              [player, player, player, 0]]
+
+    return find_sequences(player, board, threes)
+
+def find_twos(player, board):
+    twos = [  [0, 0, player, player],
+              [0, player, 0, player],
+              [0, player, player, 0],
+              [player, 0, 0, player],
+              [player, 0, player, 0],
+              [player, player, 0, 0]]
+
+    return find_sequences(player, board, twos)
+
+def find_sequences(player, board, sequences):
+    total = 0
+
+    for row in board:
+        for sequence in sequences:
+            if str(sequence).strip("[]") in str(row).strip("[]"):
+                total += 1
+
+    for i in range(7):
+        column = [row[i] for row in board]
+        for sequence in sequences:
+            if str(sequence).strip("[]") in str(column).strip("[]"):
+                total += 1
+
+    updiags = []
+
+#    testupdiags = []
+
+    for row in range(6):
+        i = row
+        j = 0
+        diag = []
+#        tud = []
+
+        while i >= 0 and j < len(board[0]):
+            diag.append(board[i][j])
+#            tud.append([i,j])
+            j = j + 1
+            i = i - 1
+
+        updiags.append(diag)
+
+#        testupdiags.append(tud)
 
 
+    for j in range(7):
+        if j == 0:
+            continue
+        diag = []
+        i = 5
+
+#        tud = []
+
+        while j < 7 and i >= 0:
+            diag.append(board[i][j])
+#            tud.append([i,j])
+
+            j = j + 1
+            i = i - 1
+        updiags.append(diag)
+
+#        testupdiags.append(tud)
+
+
+
+    for updiag in updiags:
+        for sequence in sequences:
+            if str(sequence).strip("[]") in str(updiag).strip("[]"):
+                    total += 1
+
+    downdiags = []
+
+#    testdowndiags = []
+
+    for row in range(6):
+        i = row
+        j = 6
+        diag = []
+#        tdd = []
+
+        while i >= 0 and j >= 0:
+            diag.append(board[i][j])
+#            tdd.append([i,j])
+            j = j - 1
+            i = i - 1
+
+        downdiags.append(diag)
+
+#        testdowndiags.append(tdd)
+
+    for column in range(7):
+        if column == 6:
+            continue
+
+        j = column
+        diag = []
+
+        i = 5
+
+#        tdd = []
+
+        while j >= 0 and i >= 0:
+            diag.append(board[i][j])
+#            tdd.append([i,j])
+            j = j - 1
+            i = i - 1
+
+        downdiags.append(diag)
+
+#        testdowndiags.append(tdd)
+
+
+
+    for downdiag in downdiags:
+        for sequence in sequences:
+            if str(sequence).strip("[]") in str(downdiag).strip("[]"):
+                    total += 1
+
+
+#    print "--------------"
+#    for row in testdowndiags:
+#        print row
+#    print "--------------"
+
+    return total
 
 def print_board(board):
 
@@ -256,23 +379,10 @@ if __name__=='__main__':
     print drop_piece(3,1, real_board)
     print drop_piece(4,2, real_board)
     print drop_piece(3,1, real_board)
-    print drop_piece(2,1, real_board)
-
-    print_board(real_board)
-
-    reset_board()
-
-    print ""
-    print drop_piece(4,1, real_board)
-    print drop_piece(3,2, real_board)
     print drop_piece(2,2, real_board)
-    print drop_piece(1,1, real_board)
-    print drop_piece(2,2, real_board)
-    print drop_piece(2,1, real_board)
-    print drop_piece(1,2, real_board)
-    print drop_piece(1,1, real_board)
-    print drop_piece(0,2, real_board)
-    print drop_piece(1,1, real_board)
-    print drop_piece(3,1, real_board)
+
+
+    print find_threes(1, real_board)
+    print find_threes(2, real_board)
 
     print_board(real_board)
