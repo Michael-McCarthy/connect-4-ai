@@ -1,13 +1,14 @@
 import connect4
 import random
+import sys
 
 
 class ai(object):
 
     def __init__(self, ai):
-        self.FOUR_SCORE = 10000000
-        self.THREE_SCORE = 2000
-        self.TWO_SCORE = 10
+        self.FOUR_SCORE = 10000
+        self.THREE_SCORE = 20
+        self.TWO_SCORE = 1
         self.TIE_SCORE = 0
         self.SELF_SCORE = 1
         self.OPPONENT_SCORE = 1
@@ -35,80 +36,74 @@ class ai(object):
         self.OPPONENT_SCORE = score
 
 
+    def analyze_choices(self, depth, player, alpha, beta):
 
-    def analyze_choices(self, depth, player):
+        if depth == 0:
+            return [self.evaluate(), -1]
 
-        if player == self.ai:
-            top_score = -1000000000000000
-            top_column = -1
-            minmax = 1
+        elif player == self.ai:
+            v = -sys.maxint
+            maxcolumn = -1
+
+            columns = connect4.open_columns()
+
+            if len(columns) == 0:
+                return [self.TIE_SCORE, -1]
+
+            for column in columns:
+                win = connect4.drop_piece(column, player)
+
+                if win == True:
+                    connect4.undo_piece(column)
+                    return [self.FOUR_SCORE * self.SELF_SCORE, column]
+
+                score = self.analyze_choices(depth-1,self.opponent, alpha, beta)[0]
+                connect4.undo_piece(column)
+
+                if score > v:
+                    v = score
+                    maxcolumn = column
+
+                if v > alpha:
+                    alpha = v
+
+                if beta <= alpha:
+                    break
+
+            return [v, maxcolumn]
+
 
         else:
-            top_score = 100000000000000
-            top_column = -1
-            minmax = -1
+            v = sys.maxint
 
+            mincolumn = -1
 
-        columns = connect4.open_columns()
+            columns = connect4.open_columns()
 
-        for column in columns:
+            if len(columns) == 0:
+                return [self.TIE_SCORE, -1]
 
-            win = connect4.drop_piece(column, player)
+            for column in columns:
+                win = connect4.drop_piece(column, player)
 
-            if win == True:
-                if player == self.ai:
-                    score = self.FOUR_SCORE * self.SELF_SCORE
+                if win == True:
                     connect4.undo_piece(column)
-                    return [score, column]
+                    return [self.FOUR_SCORE * self.OPPONENT_SCORE * -1, column]
+                score = self.analyze_choices(depth-1,self.ai, alpha, beta)[0]
+                connect4.undo_piece(column)
 
-                else:
-                    score = self.FOUR_SCORE * -1 * self.OPPONENT_SCORE
-                    connect4.undo_piece(column)
-                    return [score, column]
+                if score < v:
+                    v = score
+                    mincolumn = column
 
-            elif len(connect4.open_columns()) == 0:
-                score = TIE_SCORE
+                if v < beta:
+                    beta = v
 
-            elif depth > 0:
-                if player == 1:
-                    score = self.analyze_choices(depth-1, 2)[0]
+                if beta <= alpha:
+                    break
 
-                else:
-                    score = self.analyze_choices(depth-1, 1)[0]
+            return [v, mincolumn]
 
-            else:
-                score = self.evaluate()
-
-            if player == self.ai:
-                if score == self.FOUR_SCORE * self.SELF_SCORE:
-                    connect4.undo_piece(column)
-                    return [score, column]
-
-            else:
-                if score == self.FOUR_SCORE * -1 * self.OPPONENT_SCORE:
-
-                    connect4.undo_piece(column)
-
-                    return [score, column]
-
-            if player == self.ai and score > top_score:
-                top_score = score
-                top_column = column
-
-            elif player == self.opponent and score < top_score:
-                top_score = score
-                top_column = column
-
-            elif score == top_score:
-                if random.randint(0,1) == 1:
-                    top_score = score
-                    top_column = column
-
-            #print score
-
-            connect4.undo_piece(column)
-
-        return [top_score, top_column]
 
 
     def evaluate(self):
