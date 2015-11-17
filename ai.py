@@ -36,7 +36,7 @@ class ai(object):
 
 
 
-    def analyze_choices(self, depth, player, board):
+    def analyze_choices(self, depth, player):
 
         if player == self.ai:
             top_score = -1000000000000000
@@ -49,45 +49,45 @@ class ai(object):
             minmax = -1
 
 
-        columns = connect4.open_columns(board)
+        columns = connect4.open_columns()
 
         for column in columns:
 
-            win = connect4.drop_piece(column, player, board)
+            win = connect4.drop_piece(column, player)
 
             if win == True:
                 if player == self.ai:
                     score = self.FOUR_SCORE * self.SELF_SCORE
-                    connect4.undo_piece(column, board)
+                    connect4.undo_piece(column)
                     return [score, column]
 
                 else:
                     score = self.FOUR_SCORE * -1 * self.OPPONENT_SCORE
-                    connect4.undo_piece(column, board)
+                    connect4.undo_piece(column)
                     return [score, column]
 
-            elif len(connect4.open_columns(board)) == 0:
+            elif len(connect4.open_columns()) == 0:
                 score = TIE_SCORE
 
             elif depth > 0:
                 if player == 1:
-                    score = self.analyze_choices(depth-1, 2, board)[0]
+                    score = self.analyze_choices(depth-1, 2)[0]
 
                 else:
-                    score = self.analyze_choices(depth-1, 1, board)[0]
+                    score = self.analyze_choices(depth-1, 1)[0]
 
             else:
-                score = self.evaluate(board)
+                score = self.evaluate()
 
             if player == self.ai:
                 if score == self.FOUR_SCORE * self.SELF_SCORE:
-                    connect4.undo_piece(column, board)
+                    connect4.undo_piece(column)
                     return [score, column]
 
             else:
                 if score == self.FOUR_SCORE * -1 * self.OPPONENT_SCORE:
 
-                    connect4.undo_piece(column, board)
+                    connect4.undo_piece(column)
 
                     return [score, column]
 
@@ -106,18 +106,18 @@ class ai(object):
 
             #print score
 
-            connect4.undo_piece(column, board)
+            connect4.undo_piece(column)
 
         return [top_score, top_column]
 
 
-    def evaluate(self, board):
+    def evaluate(self):
         score = 0
 
-        score += connect4.find_threes(self.ai, board) * self.THREE_SCORE * self.SELF_SCORE
-        score += connect4.find_twos(self.ai, board) * self.TWO_SCORE * self.SELF_SCORE
+        score += connect4.find_threes(self.ai) * self.THREE_SCORE * self.SELF_SCORE
+        score += connect4.find_twos(self.ai) * self.TWO_SCORE * self.SELF_SCORE
 
-        score -= connect4.find_threes(self.opponent, board) * self.THREE_SCORE * self.OPPONENT_SCORE
-        score -= connect4.find_twos(self.opponent, board) * self.TWO_SCORE * self.OPPONENT_SCORE
+        score -= connect4.find_threes(self.opponent) * self.THREE_SCORE * self.OPPONENT_SCORE
+        score -= connect4.find_twos(self.opponent) * self.TWO_SCORE * self.OPPONENT_SCORE
 
         return score
