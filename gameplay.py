@@ -12,8 +12,6 @@ if __name__=='__main__':
 
     currentplayer = 1
 
-    board = connect4.real_board
-
     #initalize a player 1 ai if no human
     if human == 0:
         ai1 = ai.ai(1)
@@ -26,14 +24,14 @@ if __name__=='__main__':
     #ai2.set_OPPONENT_SCORE(10)
 
     #while no winner and there are still moves available
-    while winner == False and len(connect4.open_columns(board)) > 0:
+    while winner == False and len(connect4.open_columns()) > 0:
 
-        connect4.print_board(board)
+        connect4.print_board()
 
         #Human move
         if currentplayer == 1 and human > 0:
 
-            open_columns = connect4.open_columns(board)
+            open_columns = connect4.open_columns()
 
             print "Open columns: " + str(open_columns)
 
@@ -46,17 +44,17 @@ if __name__=='__main__':
 
                 column = input("Player " + str(currentplayer) + " choose an open column to drop your piece in: \n")
 
-            winner = connect4.drop_piece(column, currentplayer, board)
+            winner = connect4.drop_piece(column, currentplayer)
         #ai player 1 move
         elif currentplayer == 1:
-            column = ai1.analyze_choices(3, 1, board)[1]
+            column = ai1.analyze_choices(3, 1)[1]
             print "DROP AT: " + str(column)
-            winner = connect4.drop_piece(column, currentplayer, board)
+            winner = connect4.drop_piece(column, currentplayer)
         #ai player 2 move
         else:
-            column = ai2.analyze_choices(3, 2, board)[1]
+            column = ai2.analyze_choices(3, 2)[1]
             print "DROP AT: " + str(column)
-            winner = connect4.drop_piece(column, currentplayer, board)
+            winner = connect4.drop_piece(column, currentplayer)
 
 
         #if no winner, switch players
@@ -70,9 +68,9 @@ if __name__=='__main__':
     #if filled board, draw
     if winner == False:
         print "DRAW"
-        connect4.print_board(board)
+        connect4.print_board()
 
     #else print player who made the final move
     else:
         print "Player " + str(currentplayer) + " Wins!"
-        connect4.print_board(board)
+        connect4.print_board()
