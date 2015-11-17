@@ -1,10 +1,12 @@
 import connect4
 import ai
+import sys
+
 
 if __name__=='__main__':
 
     # Set this to 0 for ai vs ai games
-    human = 1
+    human = 0
 
 
     #Tracks if any player has won the game
@@ -47,12 +49,12 @@ if __name__=='__main__':
             winner = connect4.drop_piece(column, currentplayer)
         #ai player 1 move
         elif currentplayer == 1:
-            column = ai1.analyze_choices(3, 1)[1]
+            column = ai1.analyze_choices(4, 1, -sys.maxint, sys.maxint)[1]
             print "DROP AT: " + str(column)
             winner = connect4.drop_piece(column, currentplayer)
         #ai player 2 move
         else:
-            column = ai2.analyze_choices(3, 2)[1]
+            column = ai2.analyze_choices(4, 2, -sys.maxint, sys.maxint)[1]
             print "DROP AT: " + str(column)
             winner = connect4.drop_piece(column, currentplayer)
 
