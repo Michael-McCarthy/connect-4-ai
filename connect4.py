@@ -1,8 +1,8 @@
 
-real_board = [[0 for x in xrange(7)] for y in range(6)]
+board = [[0 for x in xrange(7)] for y in range(6)]
 
 
-def open_columns(board):
+def open_columns():
 
     columns = []
     i = 0
@@ -13,12 +13,12 @@ def open_columns(board):
     return columns
 
 
-def reset_board(board):
+def reset_board():
     for i in range(len(board)):
         for j in range(len(board[i])):
             board[i][j] = 0
 
-def drop_piece(column, playernum, board):
+def drop_piece(column, playernum):
 
     row = 0
     for i in range(6):
@@ -34,9 +34,9 @@ def drop_piece(column, playernum, board):
             row = i
             break
 
-    return check_win(row, column, board)
+    return check_win(row, column)
 
-def undo_piece(column, board):
+def undo_piece(column):
     for i in range(6):
         if board[i][column] != 0:
             board[i][column] = 0
@@ -44,26 +44,26 @@ def undo_piece(column, board):
     return False
 
 
-def check_win(row, column, board):
+def check_win(row, column):
     if board[row][column] == 0:
         return False
 
-    if check_horizontal(row, column, board) == True:
+    if check_horizontal(row, column) == True:
         return True
 
-    if check_vertical(row, column, board) == True:
+    if check_vertical(row, column) == True:
         return True
 
-    if check_up_diag(row, column, board) == True:
+    if check_up_diag(row, column) == True:
         return True
 
-    if check_down_diag(row, column, board) == True:
+    if check_down_diag(row, column) == True:
         return True
 
     return False
 
 
-def check_horizontal(row, column, board):
+def check_horizontal(row, column):
     player = board[row][column]
 
     horizontal = 1
@@ -99,7 +99,7 @@ def check_horizontal(row, column, board):
     return False
 
 
-def check_vertical(row,column, board):
+def check_vertical(row,column):
     player = board[row][column]
 
 
@@ -136,7 +136,7 @@ def check_vertical(row,column, board):
 
     return False
 
-def check_up_diag(row, column, board):
+def check_up_diag(row, column):
     player = board[row][column]
 
 
@@ -173,7 +173,7 @@ def check_up_diag(row, column, board):
 
     return False
 
-def check_down_diag(row, column, board):
+def check_down_diag(row, column):
     player = board[row][column]
 
 
@@ -211,15 +211,15 @@ def check_down_diag(row, column, board):
     return False
 
 
-def find_threes(player, board):
+def find_threes(player):
     threes = [[0, player, player, player],
               [player, 0, player, player],
               [player, player, 0, player],
               [player, player, player, 0]]
 
-    return find_sequences(player, board, threes)
+    return find_sequences(player, threes)
 
-def find_twos(player, board):
+def find_twos(player):
     twos = [  [0, 0, player, player],
               [0, player, 0, player],
               [0, player, player, 0],
@@ -227,9 +227,9 @@ def find_twos(player, board):
               [player, 0, player, 0],
               [player, player, 0, 0]]
 
-    return find_sequences(player, board, twos)
+    return find_sequences(player, twos)
 
-def find_sequences(player, board, sequences):
+def find_sequences(player, sequences):
     total = 0
 
     for row in board:
@@ -345,7 +345,7 @@ def find_sequences(player, board, sequences):
 
     return total
 
-def print_board(board):
+def print_board():
 
     printer = [['.' for x in xrange(7)] for y in range(6)]
 
@@ -368,21 +368,21 @@ def print_board(board):
 if __name__=='__main__':
     #print board
 
-    print drop_piece(0,1, real_board)
-    print drop_piece(1,2, real_board)
-    print drop_piece(1,1, real_board)
-    print drop_piece(2,2, real_board)
-    print drop_piece(3,1, real_board)
-    print drop_piece(2,2, real_board)
+    print drop_piece(0,1)
+    print drop_piece(1,2)
+    print drop_piece(1,1)
+    print drop_piece(2,2)
+    print drop_piece(3,1)
+    print drop_piece(2,2)
 
-    print drop_piece(3,2, real_board)
-    print drop_piece(3,1, real_board)
-    print drop_piece(4,2, real_board)
-    print drop_piece(3,1, real_board)
-    print drop_piece(2,2, real_board)
+    print drop_piece(3,2)
+    print drop_piece(3,1)
+    print drop_piece(4,2)
+    print drop_piece(3,1)
+    print drop_piece(2,2)
 
 
-    print find_threes(1, real_board)
-    print find_threes(2, real_board)
+    print find_threes(1)
+    print find_threes(2)
 
-    print_board(real_board)
+    print_board()
