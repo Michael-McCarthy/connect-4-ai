@@ -52,6 +52,7 @@ if computers == 2:
 ai2 = set_up_ai(2)
 
 
+print ai2.MAX_DEPTH
 
 pygame.init()
 
@@ -94,6 +95,7 @@ while True: # main game loop
 
 	if computers == 2:
 		if winner != True:
+			print ai1
 			column = ai1.analyze_choices(ai1.MAX_DEPTH, 1, -sys.maxint, sys.maxint)[1]
 			for i in range(6):
 				if connect4.board[i][column] != 0:
@@ -114,83 +116,84 @@ while True: # main game loop
 			DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 			pygame.display.update()
 
-			if winner != True:
-				column = ai2.analyze_choices(ai2.MAX_DEPTH, 2, -sys.maxint, sys.maxint)[1]
-				for i in range(6):
-					if connect4.board[i][column] != 0:
-						row = i-1
-						break
-					elif i == 5:
-						row = i
-						break
-				dropped = connect4.drop_piece(column,2)
-				if dropped == True:
-					yellow = 255, 255, 0
-					font = pygame.font.Font(None, 75)
-					text = 'Player 2 Wins!'
-					end = font.render("Player 2 Wins!", 0, (255,255,0), None)
-					DISPLAYSURF.blit(end,(0,0))
-					winner = True
-				tile = pygame.image.load("yellowtile.png")
-				board_display[row][column] = tile
-				DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
-				pygame.display.update()
+		if winner != True:
+			print ai2
+			column = ai2.analyze_choices(ai2.MAX_DEPTH, 2, -sys.maxint, sys.maxint)[1]
+			for i in range(6):
+				if connect4.board[i][column] != 0:
+					row = i-1
+					break
+				elif i == 5:
+					row = i
+					break
+			dropped = connect4.drop_piece(column,2)
+			if dropped == True:
+				yellow = 255, 255, 0
+				font = pygame.font.Font(None, 75)
+				text = 'Player 2 Wins!'
+				end = font.render("Player 2 Wins!", 0, (255,255,0), None)
+				DISPLAYSURF.blit(end,(0,0))
+				winner = True
+			tile = pygame.image.load("yellowtile.png")
+			board_display[row][column] = tile
+			DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
+			pygame.display.update()
 
 
+	else:
+		press=pygame.mouse.get_pressed()
+		if pressable and computers == 1:
+			if press[0]:
+				pressable = False
+				column = pygame.mouse.get_pos()[0] / 52
 
-	press=pygame.mouse.get_pressed()
-	if pressable and computers == 1:
-		if press[0]:
-			pressable = False
-			column = pygame.mouse.get_pos()[0] / 52
-
-			#print column
-			dropped = connect4.drop_piece(column,1)
-			tile=0
-			tile = pygame.image.load("redtile.png")
-			row = 0
-			print connect4.board
-			if dropped != -1:
-				if dropped == True:
-					font = pygame.font.Font(None, 75)
-					end = font.render("Player 1 Wins!", 0, (255,0,0), None)
-					DISPLAYSURF.blit(end,(0,0))
-					winner = True
-				for i in range(6):
-					if connect4.board[i][column] != 0:
-						row = i
-						break
-					elif i == 5:
-						row = i
-						break
-
-				board_display[row][column] = tile
-				DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
-				pygame.display.update()
-				connect4.print_board()
-				print column
-				print row
-				if winner != True:
-					column = ai2.analyze_choices(ai2.MAX_DEPTH, 2, -sys.maxint, sys.maxint)[1]
+				#print column
+				dropped = connect4.drop_piece(column,1)
+				tile=0
+				tile = pygame.image.load("redtile.png")
+				row = 0
+				print connect4.board
+				if dropped != -1:
+					if dropped == True:
+						font = pygame.font.Font(None, 75)
+						end = font.render("Player 1 Wins!", 0, (255,0,0), None)
+						DISPLAYSURF.blit(end,(0,0))
+						winner = True
 					for i in range(6):
 						if connect4.board[i][column] != 0:
-							row = i-1
+							row = i
 							break
 						elif i == 5:
 							row = i
 							break
-					dropped = connect4.drop_piece(column,2)
-					if dropped == True:
-						yellow = 255, 255, 0
-						font = pygame.font.Font(None, 75)
-						text = 'Player 2 Wins!'
-						end = font.render("Player 2 Wins!", 0, (255,255,0), None)
-						DISPLAYSURF.blit(end,(0,0))
-						winner = True
-					tile = pygame.image.load("yellowtile.png")
+
 					board_display[row][column] = tile
 					DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 					pygame.display.update()
+					connect4.print_board()
+					print column
+					print row
+					if winner != True:
+						column = ai2.analyze_choices(ai2.MAX_DEPTH, 2, -sys.maxint, sys.maxint)[1]
+						for i in range(6):
+							if connect4.board[i][column] != 0:
+								row = i-1
+								break
+							elif i == 5:
+								row = i
+								break
+						dropped = connect4.drop_piece(column,2)
+						if dropped == True:
+							yellow = 255, 255, 0
+							font = pygame.font.Font(None, 75)
+							text = 'Player 2 Wins!'
+							end = font.render("Player 2 Wins!", 0, (255,255,0), None)
+							DISPLAYSURF.blit(end,(0,0))
+							winner = True
+						tile = pygame.image.load("yellowtile.png")
+						board_display[row][column] = tile
+						DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
+						pygame.display.update()
 
 
 
