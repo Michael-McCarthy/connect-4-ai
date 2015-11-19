@@ -22,23 +22,23 @@ class ai(object):
             self.opponent = 1
 
     def agressive_personality(self):
-        SELF_SCORE = 20
-        OPPONENT_SCORE = 1
+        self.SELF_SCORE = 20
+        self.OPPONENT_SCORE = 1
 
     def defensive_personality(self):
-        SELF_SCORE = 1
-        OPPONENT_SCORE = 20
+        self.SELF_SCORE = 1
+        self.OPPONENT_SCORE = 20
 
     def balanced_personality(self):
-        SELF_SCORE = 1
-        OPPONENT_SCORE = 1
+        self.SELF_SCORE = 1
+        self.OPPONENT_SCORE = 1
 
     def easy_mode(self):
         self.set_THREE_SCORE(0)
         self.set_TWO_SCORE(0)
 
     def set_MAX_DEPTH(self, depth):
-        self.set_MAX_DEPTH = depth
+        self.MAX_DEPTH = depth
 
     def set_THREE_SCORE(self, score):
         self.THREE_SCORE = score
