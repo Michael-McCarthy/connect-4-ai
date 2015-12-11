@@ -81,6 +81,7 @@ clock = pygame.time.Clock()
 
 winner = False
 
+lastmove = 0
 while True: # main game loop
 	frame+=1
 	clock.tick(40)
@@ -115,7 +116,8 @@ while True: # main game loop
 			board_display[row][column] = tile
 			DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 			pygame.display.update()
-
+			print pygame.time.get_ticks() - lastmove
+			lastmove = pygame.time.get_ticks()
 		if winner != True:
 			print ai2
 			column = ai2.analyze_choices(ai2.MAX_DEPTH, 2, -sys.maxint, sys.maxint)[1]
@@ -138,6 +140,8 @@ while True: # main game loop
 			board_display[row][column] = tile
 			DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 			pygame.display.update()
+			print pygame.time.get_ticks() - lastmove
+			lastmove = pygame.time.get_ticks()
 
 
 	else:
@@ -170,9 +174,9 @@ while True: # main game loop
 					board_display[row][column] = tile
 					DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 					pygame.display.update()
-					connect4.print_board()
-					print column
-					print row
+					print pygame.time.get_ticks() - lastmove
+					lastmove = pygame.time.get_ticks()
+					#connect4.print_board()
 					if winner != True:
 						column = ai2.analyze_choices(ai2.MAX_DEPTH, 2, -sys.maxint, sys.maxint)[1]
 						for i in range(6):
@@ -194,6 +198,8 @@ while True: # main game loop
 						board_display[row][column] = tile
 						DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 						pygame.display.update()
+						print pygame.time.get_ticks() - lastmove
+						lastmove = pygame.time.get_ticks()
 
 
 
