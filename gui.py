@@ -3,6 +3,10 @@ import pygame, sys
 import ai
 from pygame.locals import *
 
+def evaluate_times():
+	print "avg:"
+	print total_movetime / ai_moves
+
 def set_up_ai(ainum):
 	AI = ai.ai(ainum)
 
@@ -82,6 +86,9 @@ clock = pygame.time.Clock()
 winner = False
 
 lastmove = 0
+ai_moves = 0
+total_movetime = 0
+
 while True: # main game loop
 	frame+=1
 	clock.tick(40)
@@ -106,6 +113,8 @@ while True: # main game loop
 					row = i
 					break
 			dropped = connect4.drop_piece(column,1)
+			print pygame.time.get_ticks() - lastmove
+			lastmove = pygame.time.get_ticks()
 			if dropped == True:
 				font = pygame.font.Font(None, 75)
 				text = 'Player 1 Wins!'
@@ -116,8 +125,7 @@ while True: # main game loop
 			board_display[row][column] = tile
 			DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 			pygame.display.update()
-			print pygame.time.get_ticks() - lastmove
-			lastmove = pygame.time.get_ticks()
+			
 		if winner != True:
 			print ai2
 			column = ai2.analyze_choices(ai2.MAX_DEPTH, 2, -sys.maxint, sys.maxint)[1]
@@ -129,6 +137,8 @@ while True: # main game loop
 					row = i
 					break
 			dropped = connect4.drop_piece(column,2)
+			print pygame.time.get_ticks() - lastmove
+			lastmove = pygame.time.get_ticks()
 			if dropped == True:
 				yellow = 255, 255, 0
 				font = pygame.font.Font(None, 75)
@@ -140,8 +150,7 @@ while True: # main game loop
 			board_display[row][column] = tile
 			DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 			pygame.display.update()
-			print pygame.time.get_ticks() - lastmove
-			lastmove = pygame.time.get_ticks()
+			
 
 
 	else:
@@ -187,7 +196,13 @@ while True: # main game loop
 								row = i
 								break
 						dropped = connect4.drop_piece(column,2)
+						movetime = pygame.time.get_ticks() - lastmove
+						print movetime
+						lastmove = pygame.time.get_ticks()
+						total_movetime += movetime
+						ai_moves += 1
 						if dropped == True:
+							evaluate_times()
 							yellow = 255, 255, 0
 							font = pygame.font.Font(None, 75)
 							text = 'Player 2 Wins!'
@@ -198,8 +213,7 @@ while True: # main game loop
 						board_display[row][column] = tile
 						DISPLAYSURF.blit(board_display[row][column],(column*52,row*52))
 						pygame.display.update()
-						print pygame.time.get_ticks() - lastmove
-						lastmove = pygame.time.get_ticks()
+						
 
 
 
