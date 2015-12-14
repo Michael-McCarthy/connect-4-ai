@@ -3,11 +3,48 @@ import ai
 import sys
 
 
+def set_up_ai(ainum):
+	AI = ai.ai(ainum)
+
+	aipersonality = input("Would you like ai player " + str(ainum) + " to be (1)Agressive, (2)Defensive, or (3)Balanced? (1,2,3) \n")
+
+	while aipersonality != 1 and aipersonality != 2 and aipersonality != 3:
+		print "ERROR: not a valid input"
+		aipersonality = input("Would you like ai player" + str(ainum) + " to be (1)Agressive, (2)Defensive, or (3)Balanced? (1,2,3) \n")
+
+	if aipersonality == 1:
+		AI.agressive_personality()
+
+	elif aipersonality == 2:
+		AI.defensive_personality()
+
+	aidifficulty = input("Set the difficulty of ai player " + str(ainum)  + " in range(1-6). Note, higher difficulty = more processing time \n")
+
+	while 1 > aidifficulty or 6 < aidifficulty:
+		print "ERROR: not a valid input"
+		aidifficulty = input("Set the difficulty of ai player " + str(ainum) + " in range(1-6). Note, higher difficulty = more processing time \n")
+
+	AI.set_MAX_DEPTH(aidifficulty)
+
+	aieasymode = input("Easy mode for ai player " + str(ainum) + "? Answer 0 for no, 1 for yes. This setting causes the AI to use a simpler heuristic. \n")
+
+	while aieasymode != 0 and aieasymode != 1:
+		print "ERROR: not a valid input"
+		aieasymode = input("Easy mode for ai player " + str(ainum) + "? Answer 0 for no, 1 for yes. This setting causes the AI to use a simpler heuristic. \n")
+
+	if aieasymode == 1:
+		AI.easy_mode()
+
+	return AI
+
+
+
 if __name__=='__main__':
 
     # Set this to 0 for ai vs ai games
-    human = 0
-
+    human = 1
+	
+    ai2 = set_up_ai(human)
 
     #Tracks if any player has won the game
     winner = False
@@ -21,7 +58,8 @@ if __name__=='__main__':
     #ai1.set_SELF_SCORE(10)
 
     #initalize player 2 ai
-    ai2 = ai.ai(2)
+    #ai2 = ai.ai(2)
+	
 
     #ai2.set_OPPONENT_SCORE(10)
 
